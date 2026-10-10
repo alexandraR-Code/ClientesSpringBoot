@@ -29,16 +29,18 @@ public class ClientesTest {
 		assertNull(cliente.getCedula());
 		assertNull(cliente.getNombre());
 		assertNull(cliente.getApellido());
+		assertNull(cliente.getEmail());
 	}
 
 	// El constructor inicializado guarda cada dato en su lugar
 	@Test
 	public void testClienteConstructorInicializado() {
-		Cliente cliente = new Cliente("1001", "Ana", "Lopez");
+		Cliente cliente = new Cliente("1001", "Ana", "Lopez", "alexa@movilis.ec");
 
 		assertEquals("1001", cliente.getCedula());
 		assertEquals("Ana", cliente.getNombre());
 		assertEquals("Lopez", cliente.getApellido());
+		assertEquals("alexa@movilis.ec", cliente.getEmail());
 	}
 
 	// Los setters cambian los datos y los getters los devuelven
@@ -58,9 +60,9 @@ public class ClientesTest {
 	// toString muestra los tres datos
 	@Test
 	public void testClienteToString() {
-		Cliente cliente = new Cliente("1001", "Ana", "Lopez");
+		Cliente cliente = new Cliente("1001", "Ana", "Lopez", "alexa@movilis.ec");
 
-		assertEquals("Cliente [cedula=1001, nombre=Ana, apellido=Lopez]", cliente.toString());
+		assertEquals("Cliente [cedula=1001, nombre=Ana, apellido=Lopez, email=alexa@movilis.ec]", cliente.toString());
 	}
 
 	// =====================================================================
@@ -84,7 +86,7 @@ public class ClientesTest {
 	@Test
 	public void testCrearClienteNuevo() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "maria@movilis.ec");
 
 		Cliente resultado = servicio.crear(ana);
 
@@ -96,8 +98,8 @@ public class ClientesTest {
 	@Test
 	public void testCrearDosClientesDistintos() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
-		Cliente luis = new Cliente("1002", "Luis", "Perez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "lola@movilis.ec");
+		Cliente luis = new Cliente("1002", "Luis", "Perez", "carlos@movilis.ec");
 
 		servicio.crear(ana);
 		servicio.crear(luis);
@@ -111,9 +113,9 @@ public class ClientesTest {
 	@Test
 	public void testCrearCedulaRepetida() {
 		ServicioCliente servicio = new ServicioCliente();
-		servicio.crear(new Cliente("1001", "Ana", "Lopez"));
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "tatiana@movilis.ec"));
 
-		Cliente resultado = servicio.crear(new Cliente("1001", "Otra", "Persona"));
+		Cliente resultado = servicio.crear(new Cliente("1001", "Otra", "Persona", "caro@movilis.ec"));
 
 		assertNull(resultado);
 		assertEquals(1, servicio.listar().size());
@@ -124,10 +126,10 @@ public class ClientesTest {
 	@Test
 	public void testCrearDespuesDeEliminar() {
 		ServicioCliente servicio = new ServicioCliente();
-		servicio.crear(new Cliente("1001", "Ana", "Lopez"));
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "fernan@movilis.ec"));
 		servicio.eliminar("1001");
 
-		Cliente resultado = servicio.crear(new Cliente("1001", "Nueva", "Ana"));
+		Cliente resultado = servicio.crear(new Cliente("1001", "Nueva", "Ana", "diana@movilis.ec"));
 
 		assertNotNull(resultado);
 		assertEquals(1, servicio.listar().size());
@@ -141,8 +143,8 @@ public class ClientesTest {
 	@Test
 	public void testBuscarExistente() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
-		Cliente luis = new Cliente("1002", "Luis", "Perez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "Astrid@movilis.ec");
+		Cliente luis = new Cliente("1002", "Luis", "Perez", "jesica@movilis.ec");
 		servicio.crear(ana);
 		servicio.crear(luis);
 
@@ -153,7 +155,7 @@ public class ClientesTest {
 	@Test
 	public void testBuscarInexistente() {
 		ServicioCliente servicio = new ServicioCliente();
-		servicio.crear(new Cliente("1001", "Ana", "Lopez"));
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "juli@movilis.ec"));
 
 		assertNull(servicio.buscarPorCedula("9999"));
 	}
@@ -174,24 +176,25 @@ public class ClientesTest {
 	@Test
 	public void testActualizarExistente() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "movilis@movilis.ec");
 		servicio.crear(ana);
 
-		Cliente resultado = servicio.actualizar("1001", new Cliente("0000", "Anita", "Gomez"));
+		Cliente resultado = servicio.actualizar("1001", new Cliente("0000", "Anita", "Gomez", "movilis@movilis.ec"));
 
 		assertSame(ana, resultado);
 		assertEquals("Anita", resultado.getNombre());
 		assertEquals("Gomez", resultado.getApellido());
+		assertEquals("movilis@movilis.ec", resultado.getEmail());
 	}
 
 	// Actualizar NO cambia la cedula (es la clave del cliente)
 	@Test
 	public void testActualizarNoCambiaLaCedula() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "dario@movilis.ec");
 		servicio.crear(ana);
 
-		servicio.actualizar("1001", new Cliente("0000", "Anita", "Gomez"));
+		servicio.actualizar("1001", new Cliente("0000", "Anita", "Gomez", "amanda@movilis.ec"));
 
 		assertEquals("1001", ana.getCedula());
 		assertSame(ana, servicio.buscarPorCedula("1001"));
@@ -202,10 +205,10 @@ public class ClientesTest {
 	@Test
 	public void testActualizarInexistente() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "ronald@movilis.ec");
 		servicio.crear(ana);
 
-		Cliente resultado = servicio.actualizar("9999", new Cliente("9999", "X", "Y"));
+		Cliente resultado = servicio.actualizar("9999", new Cliente("9999", "X", "Y", "laura@movilis.ec"));
 
 		assertNull(resultado);
 		assertEquals("Ana", ana.getNombre());
@@ -220,8 +223,8 @@ public class ClientesTest {
 	@Test
 	public void testEliminarExistente() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
-		Cliente luis = new Cliente("1002", "Luis", "Perez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "yenny@movilis.ec");
+		Cliente luis = new Cliente("1002", "Luis", "Perez", "jess@movilis.ec");
 		servicio.crear(ana);
 		servicio.crear(luis);
 
@@ -237,7 +240,7 @@ public class ClientesTest {
 	@Test
 	public void testEliminarInexistente() {
 		ServicioCliente servicio = new ServicioCliente();
-		servicio.crear(new Cliente("1001", "Ana", "Lopez"));
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "susana@movilis.ec"));
 
 		assertFalse(servicio.eliminar("9999"));
 		assertEquals(1, servicio.listar().size());
@@ -247,7 +250,7 @@ public class ClientesTest {
 	@Test
 	public void testEliminarDosVeces() {
 		ServicioCliente servicio = new ServicioCliente();
-		servicio.crear(new Cliente("1001", "Ana", "Lopez"));
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "jse@movilis.ec"));
 
 		assertTrue(servicio.eliminar("1001"));
 		assertFalse(servicio.eliminar("1001"));
@@ -261,12 +264,12 @@ public class ClientesTest {
 	@Test
 	public void testCrudCompleto() {
 		ServicioCliente servicio = new ServicioCliente();
-		Cliente ana = new Cliente("1001", "Ana", "Lopez");
+		Cliente ana = new Cliente("1001", "Ana", "Lopez", "sara@movilis.ec");
 
 		assertSame(ana, servicio.crear(ana));
 		assertSame(ana, servicio.buscarPorCedula("1001"));
 
-		servicio.actualizar("1001", new Cliente("1001", "Ana Maria", "Lopez"));
+		servicio.actualizar("1001", new Cliente("1001", "Ana Maria", "Lopez", "stefy@movilis.ec"));
 		assertEquals("Ana Maria", servicio.buscarPorCedula("1001").getNombre());
 
 		assertTrue(servicio.eliminar("1001"));
@@ -291,7 +294,8 @@ public class ClientesTest {
 		ServicioCliente servicio = new ServicioCliente();
 		servicio.crear(new Cliente()); // el primero entra: la lista estaba vacia
 
-		assertThrows(NullPointerException.class, () -> servicio.crear(new Cliente("1001", "Ana", "Lopez")));
+		assertThrows(NullPointerException.class,
+				() -> servicio.crear(new Cliente("1001", "Ana", "Lopez", "karola@movilis.ec")));
 	}
 
 	// =====================================================================
@@ -304,5 +308,55 @@ public class ClientesTest {
 		HolaController controlador = new HolaController();
 
 		assertEquals("Hola desde Spring Boot", controlador.saludar());
+	}
+	// ========================================================================
+	// 10. testEmail
+	// ========================================================================
+
+	// Prueba de regresión: verifica que actualizar también cambia el email
+	@Test
+	public void testActualizarCambiarEmail() {
+		ServicioCliente servicio = new ServicioCliente();
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "ana@movilis.ec")); // email viejo
+
+		Cliente resultado = servicio.actualizar("1001", new Cliente("0000", "Anita", "Gomez", "anita@movilis.ec")); // email
+																													// nuevo
+
+		assertEquals("anita@movilis.ec", resultado.getEmail());
+	}
+
+	// Prueba de creación: verifica que crear conserva el email del cliente
+	@Test
+	public void testCrearConservarEmail() {
+		ServicioCliente servicio = new ServicioCliente();
+
+		Cliente resultado = servicio.crear(new Cliente("1001", "Ana", "Lopez", "ana@movilis.ec"));
+
+		assertEquals("ana@movilis.ec", resultado.getEmail());
+
+	}
+
+	// Prueba de búsqueda: verifica que buscarPorCedula devuelve el cliente con su
+	// email
+	@Test
+	public void testBuscarDevuelveEmail() {
+		ServicioCliente servicio = new ServicioCliente();
+		servicio.crear(new Cliente("1021", "Ana", "Lopez", "ana@movilis.ec"));
+		Cliente resultado = servicio.buscarPorCedula("1021");
+
+		assertEquals("ana@movilis.ec", resultado.getEmail());
+
+	}
+
+	// Prueba de eliminación: verifica que eliminar borra a un cliente que tiene
+	// email
+	@Test
+	public void testEliminarExistenteEmail() {
+		ServicioCliente servicio = new ServicioCliente();
+		servicio.crear(new Cliente("1001", "Ana", "Lopez", "jse@movilis.ec"));
+
+		assertTrue(servicio.eliminar("1001"));
+		assertFalse(servicio.eliminar("1001"));
+
 	}
 }

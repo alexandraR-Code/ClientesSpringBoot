@@ -3,8 +3,12 @@ package com.krakedev.clientes.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.krakedev.clientes.entidades.Cliente;
 
+//@Service: marca la clase como capa de servicio (lógica de negocio); Spring la crea y la administra (bean)
+@Service
 public class ServicioCliente {
 	// Atributo
 	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
@@ -43,6 +47,7 @@ public class ServicioCliente {
 		if (cliente != null) {
 			cliente.setNombre(clienteActualizado.getNombre());
 			cliente.setApellido(clienteActualizado.getApellido());
+			cliente.setEmail(clienteActualizado.getEmail());
 		}
 		return cliente;
 	}

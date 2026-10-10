@@ -6,25 +6,28 @@ public class Cliente {
 	private String cedula;
 	private String nombre;
 	private String apellido;
+	private String email;
 
 	// Constructor vacio y inicializado
 	public Cliente() {
 	}
 
-	public Cliente(String cedula, String nombre, String apellido) {
+	public Cliente(String cedula, String nombre, String apellido, String email) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.email = email;
 	}
 
 	// toString
 	@Override
 	public String toString() {
-		return "Cliente [cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + "]";
+		return "Cliente [cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + "]";
 	}
 
 	// Encapsulamiento
+
 	public String getCedula() {
 		return cedula;
 	}
@@ -47,6 +50,14 @@ public class Cliente {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
